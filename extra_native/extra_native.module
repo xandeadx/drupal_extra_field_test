@@ -1,0 +1,30 @@
+<?php
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function extra_native_entity_extra_field_info(): array {
+  for ($i = 1; $i <= 20; $i++) {
+    $extra_fields['node']['page']['display']['extra' . $i] = [
+      'label' => 'Extra ' . $i,
+      'weight' => 0,
+      'visible' => FALSE,
+    ];
+  }
+
+  return $extra_fields;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view(): node.
+ */
+function extra_native_node_view(array &$build, NodeInterface $node, EntityViewDisplayInterface $display, string $view_mode): void {
+  for ($i = 1; $i <= 20; $i++) {
+    if ($display->getComponent('extra' . $i)) {
+      $build['extra' . $i] = ['#markup' => 'Extra ' . $i];
+    }
+  }
+}
